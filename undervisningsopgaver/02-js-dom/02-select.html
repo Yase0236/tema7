@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      header,
+      h2,
+      footer,
+      article {
+        border: 1px solid #ccc;
+      }
+      header,
+      h2,
+      footer {
+        text-align: center;
+      }
+      section {
+        max-width: 1000px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        margin: 0 auto 20px;
+      }
+      img {
+        width: 100%;
+        object-fit: cover;
+      }
+      article {
+        margin: 0.5rem;
+      }
+      article:nth-child(2) {
+        color: red;
+      }
+      article:nth-child(1) {
+        background-color: blue;
+      }
+    </style>
+
+    <title>HTML5 struktur</title>
+  </head>
+
+  <body>
+    <main>
+      <h2>Undertitel</h2>
+
+      <section>
+        <article>
+          <img src="https://placeimg.com/640/480/any" alt="random" />
+          <p>
+            <b>Billede 1</b>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita
+            incidunt natus maiores consequuntur doloribus nemo perspiciatis
+            alias mollitia dicta, deserunt quo beatae dolorum, eveniet repellat
+            sed illum dolor cumque rerum tenetur consequatur laboriosam! Et
+            porro numquam, aliquid facere voluptatibus rem nesciunt dolore. Sed
+            magnam fuga eos rerum doloribus reiciendis ipsum.
+          </p>
+        </article>
+
+        <article>
+          <img src="https://placeimg.com/640/480/any" alt="random" />
+          <p>
+            <b>Billede 2</b>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
+            corporis neque, doloribus ex, distinctio, modi assumenda minima
+            provident eos illo ratione quae obcaecati culpa. Qui animi debitis
+            eius odit, excepturi nihil rem similique exercitationem delectus
+            neque distinctio tenetur aperiam, repellat suscipit assumenda
+            aliquam aspernatur porro sequi, voluptatum at optio vero.
+          </p>
+        </article>
+      </section>
+    </main>
+
+    <footer>This is a footer</footer>
+
+    <script>
+      const headertitle = document.querySelector("header h1");
+      console.log(headertitle);
+
+      /*tager fat i først artikel (paragraffen)*/
+      const article2 = document.querySelector("article:nth-child(1)");
+      console.log(article2);
+
+      /*tager fat i billedet i anden article*/
+      const article2Pic = document.querySelector("article:nth-child(2) img");
+      console.log(article2Pic);
+    </script>
+  </body>
+</html>
