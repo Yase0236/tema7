@@ -6,6 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      main {
+        width: 80vw;
+        margin: 0 auto;
+      }
+
       header,
       h2,
       footer,
@@ -30,12 +40,6 @@
       article {
         margin: 0.5rem;
       }
-      article:nth-child(2) {
-        color: red;
-      }
-      article:nth-child(1) {
-        background-color: blue;
-      }
     </style>
 
     <title>HTML5 struktur</title>
@@ -43,13 +47,13 @@
 
   <body>
     <main>
-      <h2>Undertitel</h2>
+      <h2>Hello everyone</h2>
 
       <section>
         <article>
           <img src="https://placeimg.com/640/480/any" alt="random" />
           <p>
-            <b>Billede 1</b>
+            <b>Random picture</b>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita
             incidunt natus maiores consequuntur doloribus nemo perspiciatis
             alias mollitia dicta, deserunt quo beatae dolorum, eveniet repellat
@@ -62,7 +66,7 @@
         <article>
           <img src="https://placeimg.com/640/480/any" alt="random" />
           <p>
-            <b>Billede 2</b>
+            <b>Random picture</b>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
             corporis neque, doloribus ex, distinctio, modi assumenda minima
             provident eos illo ratione quae obcaecati culpa. Qui animi debitis
@@ -74,7 +78,9 @@
       </section>
     </main>
 
-    <footer>This is a footer</footer>
+    <footer>
+      This is a footer and the only thing i knew how to style myself.
+    </footer>
 
     <script>
       const title = document.querySelector("header h1");
@@ -83,6 +89,12 @@
       const article1Heading = document.querySelector("article:nth-child(1) h3");
       const article1Content = document.querySelector("article:nth-child(1) p");
       console.log(article1, article1Heading, img1, article1Content);
+
+      title.textContent = "Billeder";
+      article1Heading.textContent = "Arkitektur";
+      article1Content.textContent = "Bygninger skaber rum";
+      img1.src = "maude.png";
+      img1.alt = "Caprice 30 - maude";
     </script>
   </body>
 </html>
