@@ -15,11 +15,17 @@
       footer {
         text-align: center;
       }
+      article {
+        cursor: pointer;
+      }
       section {
         max-width: 1000px;
         display: grid;
         grid-template-columns: repeat(autofit, minmax(400px, 1fr));
         margin: 0 auto;
+      }
+      .markering {
+        background-color: bisque;
       }
     </style>
 
@@ -60,6 +66,31 @@
     </main>
     <footer>This is a footer</footer>
 
-    <script></script>
+    <script>
+      const artikler = document.querySelectorAll("article");
+      // console.log(artikler);
+      artikler.forEach(marker);
+
+      // function setEvent(artikel)
+      function marker(artikel) {
+        //artikel.addEventlistener("click", marker);
+        artikel.classList.add("markering");
+      }
+
+      // function marker (){
+      //   console.log(this);
+      // this.classList.toggle("markering");
+      // }
+      /**********************************/
+      // const medlem = ["Jasmin", "Jens"];
+      //medlem.forEach(visNavn);
+
+      //function visNavn(navn) {
+      //  console.log(navn);
+      //}
+
+      // const p = document.querySelector("p");
+      // p.style.backgroundColor = "lightblue";
+    </script>
   </body>
 </html>
