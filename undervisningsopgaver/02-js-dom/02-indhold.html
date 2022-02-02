@@ -6,35 +6,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      main {
+        width: 80vw;
+        margin: 0 auto;
+      }
       header,
-      h2,
       footer,
       article {
         border: 1px solid #ccc;
       }
-      header,
-      h2,
+
+      section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        grid-gap: 20px;
+        /*
+            display: flex;
+            flex-wrap: wrap;
+*/
+      }
+
+      article {
+        /*           flex-basis: 50%;*/
+        border: 1px solid #333;
+      }
+
+      img {
+        width: 100%;
+      }
+
+      h1,
       footer {
         text-align: center;
       }
-      section {
-        max-width: 1000px;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        margin: 0 auto 20px;
-      }
-      img {
-        width: 100%;
-        object-fit: cover;
-      }
-      article {
-        margin: 0.5rem;
-      }
-      article:nth-child(2) {
-        color: red;
-      }
-      article:nth-child(1) {
-        background-color: blue;
+
+      header,
+      footer {
+        padding: 10px 0;
       }
     </style>
 
@@ -83,7 +96,6 @@
       const article1Heading = document.querySelector("article:nth-child(1) h3");
       const article1Content = document.querySelector("article:nth-child(1) p");
       console.log(article1, article1Heading, img1, article1Content);
-
       title.textContent = "Billeder";
       article1Heading.textContent = "Arkitektur";
       article1Content.textContent = "Bygninger skaber rum";
