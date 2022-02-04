@@ -24,6 +24,7 @@
         grid-auto-rows: minmax(350px, auto);
         grid-gap: 25px;
         grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        padding: 1rem;
       }
       @media (min-width: 650px) {
         section {
@@ -36,18 +37,43 @@
         }
       }
       article {
-        border: 1px solid rgb(175, 28, 28);
-        /* border-radius: 25px 0; */
+        border: 1px solid blueviolet;
+        border-radius: 25px;
         padding: 1rem;
+        background-color: rgb(190, 179, 202);
+        text-align: center;
       }
       img {
         max-width: 100%;
       }
+      h1 {
+        border: 1px solid blueviolet;
+        font-family: "Road Rage", monospace;
+        text-align: center;
+        font-size: 3rem;
+      }
+      h2 {
+        color: blueviolet;
+        font-family: "Plateia", monospace;
+        font-size: 1rem;
+      }
+      .efternavn {
+        font-family: "Zen Kurenaido", monospace;
+        font-size: 1rem;
+        font-weight: 200;
+      }
+      .email {
+        font-family: "Zen Kurenaido", monospace;
+        font-size: 0.78rem;
+        font-weight: 200;
+        font-style: italic;
+      }
     </style>
 
-    <title>Person galleri</title>
+    <title>Person galleyi</title>
   </head>
   <body>
+    <h1>Employee gallery</h1>
     <section>
       <template>
         <article class="personer">
