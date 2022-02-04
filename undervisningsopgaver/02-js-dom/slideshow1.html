@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style></style>
+
+    <title>Slideshow</title>
+  </head>
+
+  <body>
+    <div class="billede">
+      <img src="/undervisningsopgaver/02-js-dom/img/img1.png" alt="" />
+      <img src="/undervisningsopgaver/02-js-dom/img/img2.png" alt="" />
+      <img src="/undervisningsopgaver/02-js-dom/img/img3.png" alt="" />
+      <img src="/undervisningsopgaver/02-js-dom/img/img4.png" alt="" />
+      <img src="/undervisningsopgaver/02-js-dom/img/img5.png" alt="" />
+      <img src="/undervisningsopgaver/02-js-dom/img/img6.png" alt="" />
+      <img src="/undervisningsopgaver/02-js-dom/img/img7.png" alt="" />
+      <img src="/undervisningsopgaver/02-js-dom/img/img8.png" alt="" />
+    </div>
+
+    <script>
+      const kategorier = document.querySelector["cartoon"];
+
+      billede.addEventListener("click", skift);
+
+      function skift() {
+        const nummer = Math.round(Math.random() * 8);
+        billede.src =
+          "/undervisningsopgaver/02-js-dom/img/img1.png" + kategorier[nummer];
+        billede.alt = kategorier[nummer];
+      }
+    </script>
+  </body>
+</html>
