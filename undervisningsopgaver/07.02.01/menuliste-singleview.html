@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      main {
+        width: 80vw;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      section {
+        display: grid;
+        grid-auto-columns: max-content;
+        grid-auto-flow: dense;
+        grid-auto-rows: minmax(350px, auto);
+        grid-gap: 25px;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        padding: 1rem;
+      }
+      @media (min-width: 650px) {
+        section {
+          display: grid;
+          grid-auto-columns: max-content;
+          grid-auto-flow: dense;
+          grid-auto-rows: minmax(200px, auto);
+          grid-gap: 25px;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+      }
+      article {
+        border: 1px solid blueviolet;
+        border-radius: 25px;
+        padding: 1rem;
+        background-color: rgb(190, 179, 202);
+        text-align: center;
+      }
+      button {
+        margin: 2em 0 0 1.2em;
+        text-transform: capitalize;
+      }
+      img {
+        max-width: 100%;
+      }
+      h1 {
+        border: 1px solid blueviolet;
+        font-family: "Road Rage", monospace;
+        text-align: center;
+        font-size: 3rem;
+      }
+      h2 {
+        color: blueviolet;
+        font-family: "Plateia", monospace;
+        font-size: 1rem;
+      }
+      .efternavn {
+        font-family: "Zen Kurenaido", monospace;
+        font-size: 1rem;
+        font-weight: 200;
+      }
+      .email {
+        font-family: "Zen Kurenaido", monospace;
+        font-size: 0.78rem;
+        font-weight: 200;
+        font-style: italic;
+      }
+      #modal {
+        display: none;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        background-color: #00000055;
+      }
+
+      #modal article {
+        max-width: 900px;
+        margin: auto;
+        background-color: white;
+      }
+    </style>
+
+    <title>Single view</title>
+  </head>
+
+  <body>
+    <main>
+      <button>Tilbage</button>
+    </main>
+    <template>
+      <article>
+        <h2 class=""></h2>
+        <img src="" alt="" class="billede" />
+        <h3 class="navn"></h3>
+        <p class="pris"></p>
+        <p class="langbeskrivelse"></p>
+      </article>
+    </template>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id");
+      console.log({ id });
+
+      const url = "https://babushka-dd8a.restdb.io/rest/menu";
+      const key = "600ec2fb1346a1524ff12de4";
+
+      async function hentData() {
+        const respons = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            "x-apikey": key,
+          },
+        });
+        menu = await respons.json();
+        console.log({ menu });
+        vis();
+      }
+
+      function vis() {
+        document.querySelector(".billede").src = "menu/" + menu.billede;
+        document.querySelector(".navn").textContent = menu.navn;
+        document.querySelector(".langbeskrivelse").textContent =
+          menu.langbeskrivelse;
+      }
+
+      hentData();
+
+      document.querySelector("button").addEventListener("click", () => {
+        history.back();
+      });
+    </script>
+  </body>
+</html>
