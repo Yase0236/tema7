@@ -43,6 +43,11 @@
         background-color: rgb(190, 179, 202);
         text-align: center;
       }
+      button {
+        margin: 2em 0 0 1.2em;
+        text-transform: capitalize;
+        background-color: purple;
+      }
       img {
         max-width: 100%;
       }
@@ -68,56 +73,136 @@
         font-weight: 200;
         font-style: italic;
       }
+      #modal {
+        display: none;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        background-color: #00000055;
+      }
+
+      #modal article {
+        max-width: 900px;
+        margin: auto;
+        background-color: white;
+      }
     </style>
 
-    <title>Person gallery</title>
+    <title>Employee gallery</title>
   </head>
   <body>
     <h1>Employee gallery</h1>
-    <section>
-      <template>
-        <article class="personer">
-          <img src="" alt="profilbillede" class="profilbillede" />
-          <h2 class="fornavn"></h2>
-          <p class="efternavn"></p>
 
-          <p class="email"></p>
-        </article>
-      </template>
-    </section>
+    <nav><button>alle</button></nav>
+
+    <section></section>
+
+    <aside id="modal">
+      <article>
+        <img src="" alt="" class="profilbillede" />
+        <h2 class="fornavn"></h2>
+        <p class="efternavn"></p>
+
+        <p class="email"></p>
+      </article>
+    </aside>
+
+    <section></section>
+
+    <template>
+      <article>
+        <img src="" alt="" class="profilbillede" />
+        <h2 class="fornavn"></h2>
+        <p class="efternavn"></p>
+
+        <p class="email"></p>
+      </article>
+    </template>
 
     <script>
       const container = document.querySelector("section");
+      const modal = document.querySelector("#modal");
       const temp = document.querySelector("template");
-
+      const nav = document.querySelector("nav");
       const url = "https://esnpersongalleri-4fa8.restdb.io/rest/medlemmer";
+      const key = "61fcf7e63f215f310a37be63";
+
+      let medlemmer = [];
+      let filter = "alle";
 
       const options = {
         headers: {
-          "x-apikey": "61fcf7e63f215f310a37be63",
+          "x-apikey": key,
         },
       };
 
-      async function hentData() {
-        const resspons = await fetch(url, options);
-        const json = await resspons.json();
-        vis(json);
+      async function hentdata() {
+        const respons = await fetch(url, options);
+        const json = await respons.json();
+        medlemmer = json;
+        bygFilterMenu();
+        vis();
       }
 
-      function vis(person) {
-        person.forEach((enPerson) => {
-          const klon = temp.cloneNode(true).content;
-          klon.querySelector("h2").textContent = enPerson.fornavn;
-          klon.querySelector(".efternavn").textContent = enPerson.efternavn;
-          klon.querySelector(".profilbillede").src =
-            "faces/" + enPerson.profilbillede;
-          klon.querySelector(".email").textContent = enPerson.email;
-
-          container.appendChild(klon);
+      function bygFilterMenu() {
+        document.querySelector("nav button").addEventListener("click", filtrer);
+        let mulige = [];
+        medlemmer.forEach((medlem) => {
+          if (!mulige.includes(medlem.troende)) {
+            mulige.push(medlem.troende);
+            const nyKnap = document.createElement("button");
+            nyKnap.textContent = medlem.troende;
+            nyKnap.addEventListener("click", filtrer);
+            nav.appendChild(nyKnap);
+          }
         });
       }
 
-      hentData(url);
+      function filtrer() {
+        console.log(this.textContent);
+        filter = this.textContent;
+        container.textContent = "";
+        vis();
+      }
+
+      function vis() {
+        medlemmer.forEach((medlem) => {
+          if (medlem.troende == filter || filter == "alle") {
+            const klon = temp.cloneNode(true).content;
+
+            klon.querySelector("h2").textContent = medlem.fornavn;
+            klon.querySelector(".efternavn").textContent = medlem.efternavn;
+
+            klon.querySelector(".profilbillede").src =
+              "faces/" + medlem.profilbillede;
+            klon.querySelector("img").alt = "profilbillede";
+            klon
+              .querySelector("img")
+              .addEventListener("click", () => visDetaljer(medlem));
+            klon.querySelector(".email").textContent = medlem.email;
+
+            klon
+              .querySelector("article")
+              .addEventListener(
+                "click",
+                () =>
+                  (location.href = `personliste-singleview.html?id=${medlem._id}`)
+              );
+
+            container.appendChild(klon);
+          }
+        });
+      }
+
+      function visDetaljer(medlem) {
+        console.log(medlem);
+        modal.querySelector("h2").textContent = medlem.fornavn;
+        modal.querySelector("img").src = "faces/" + medlem.billede;
+        modal.style.display = "block";
+      }
+
+      modal.addEventListener("click", () => (modal.style.display = "none"));
+      hentdata();
     </script>
   </body>
 </html>
