@@ -86,6 +86,33 @@
         margin: auto;
         background-color: white;
       }
+      /* #popup {
+        display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: aquamarine;
+        display: none;
+        overflow: scroll;
+      }
+      #popup article {
+        width: 80vw;
+        display: flex;
+        margin: 4rem auto;
+        border-radius: 25px;
+        padding: 12px;
+        background-color: white;
+      }
+      #luk {
+        position: fixed;
+        padding: 1em;
+        font-size: 1.7em;
+        font-weight: bolder;
+        color: white;
+        cursor: pointer;
+      } */
     </style>
 
     <title>Employee gallery</title>
@@ -94,8 +121,6 @@
     <h1>Employee gallery</h1>
 
     <nav><button>alle</button></nav>
-
-    <section></section>
 
     <aside id="modal">
       <article>
@@ -107,7 +132,7 @@
       </article>
     </aside>
 
-    <section></section>
+    <section id="liste"></section>
 
     <template>
       <article>
@@ -121,13 +146,60 @@
 
     <script>
       const container = document.querySelector("section");
-      const modal = document.querySelector("#modal");
       const temp = document.querySelector("template");
+      const modal = document.querySelector("#modal");
       const nav = document.querySelector("nav");
       const url = "https://esnpersongalleri-4fa8.restdb.io/rest/medlemmer";
       const key = "61fcf7e63f215f310a37be63";
 
-      let medlemmer = [];
+      document.addEventListener("DOMContentLoaded", visMedlemmer);
+      let medlemmer = [
+        {
+          fornavn: "Katheryn",
+          efternavn: "Crist",
+          email: "Bella.Schaden@Reta.net",
+        },
+        {
+          fornavn: "Spencer",
+          efternavn: "Kuphal",
+          email: "Brandyn_Barrows@Haley.io",
+        },
+        {
+          fornavn: "Angie",
+          efternavn: "Quitzon",
+          email: "Raynor_Jamaal@hotmail.com",
+        },
+        {
+          fornavn: "Johnathan",
+          efternavn: "Blick",
+          email: "Rashawn.Rath@yahoo.com",
+        },
+        {
+          fornavn: "Isaias",
+          efternavn: "Runte",
+          email: "Heller.Stanford@gmail.com",
+        },
+        {
+          fornavn: "Danielle",
+          efternavn: "McGlynn",
+          email: "Emmy_Reilly@yahoo.com",
+        },
+        {
+          fornavn: "Nelson",
+          efternavn: "Armstrong",
+          email: "Toy_Shaniya@yahoo.com",
+        },
+        {
+          fornavn: "Thea",
+          efternavn: "Friesen",
+          email: "Giovanna_Buckridge@gmail.com",
+        },
+        {
+          fornavn: "Leo",
+          efternavn: "Runte",
+          email: "Gulgowski_Ava@Loraine.info",
+        },
+      ];
       let filter = "alle";
 
       const options = {
@@ -136,12 +208,19 @@
         },
       };
 
+      function start() {
+        const listeVisning = document.querySelector("#liste");
+        medlemmer.forEach((medlem) => {
+          listevisning.innerHTML += `<p>${medlem.fornavn} ${medlem.efternavn} ${medlem.email}</p>`;
+        });
+      }
+
       async function hentdata() {
         const respons = await fetch(url, options);
         const json = await respons.json();
         medlemmer = json;
         bygFilterMenu();
-        vis();
+        visMedlemmer();
       }
 
       function bygFilterMenu() {
@@ -162,10 +241,14 @@
         console.log(this.textContent);
         filter = this.textContent;
         container.textContent = "";
-        vis();
+        visMedlemmer();
       }
 
-      function vis() {
+      function visMedlemmer() {
+        const dest = document.querySelector("#liste");
+        const skabelon = document.querySelector("template").content;
+        dest.textContent = ""; //fjerner containeren i en ny loop
+
         medlemmer.forEach((medlem) => {
           if (medlem.troende == filter || filter == "alle") {
             const klon = temp.cloneNode(true).content;
@@ -183,22 +266,18 @@
 
             klon
               .querySelector("article")
-              .addEventListener(
-                "click",
-                () =>
-                  (location.href = `personliste-singleview.html?id=${medlem._id}`)
-              );
-
-            container.appendChild(klon);
+              .addEventListener("click", () => visDetaljer(medlem));
+            dest.appendChild(klon);
           }
         });
       }
 
       function visDetaljer(medlem) {
-        console.log(medlem);
-        modal.querySelector("h2").textContent = medlem.fornavn;
-        modal.querySelector("img").src = "faces/" + medlem.profilbillede;
-        modal.style.display = "block";
+        location.href = `personliste-detailview.html?id=${medlem._id}`;
+        // console.log(medlem);
+        // modal.querySelector("h2").textContent = medlem.fornavn;
+        // modal.querySelector("img").src = "faces/" + medlem.profilbillede;
+        // modal.style.display = "block";
       }
 
       modal.addEventListener("click", () => (modal.style.display = "none"));
