@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      main {
+        width: 80vw;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      section {
+        display: grid;
+        grid-auto-columns: max-content;
+        grid-auto-flow: dense;
+        grid-auto-rows: minmax(350px, auto);
+        grid-gap: 25px;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        padding: 1rem;
+      }
+      @media (min-width: 650px) {
+        section {
+          display: grid;
+          grid-auto-columns: max-content;
+          grid-auto-flow: dense;
+          grid-auto-rows: minmax(200px, auto);
+          grid-gap: 25px;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+      }
+      article {
+        border: 1px solid blueviolet;
+        border-radius: 25px;
+        padding: 1rem;
+        background-color: rgb(190, 179, 202);
+        text-align: center;
+      }
+      button {
+        margin: 2em 0 0 1.2em;
+        text-transform: capitalize;
+        background-color: purple;
+      }
+      img {
+        max-width: 100%;
+      }
+      h1 {
+        border: 1px solid blueviolet;
+        font-family: "Road Rage", monospace;
+        text-align: center;
+        font-size: 3rem;
+      }
+      h2 {
+        color: blueviolet;
+        font-family: "Plateia", monospace;
+        font-size: 1rem;
+      }
+      .efternavn {
+        font-family: "Zen Kurenaido", monospace;
+        font-size: 1rem;
+        font-weight: 200;
+      }
+      .email {
+        font-family: "Zen Kurenaido", monospace;
+        font-size: 0.78rem;
+        font-weight: 200;
+        font-style: italic;
+      }
+      #modal {
+        display: none;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        background-color: #00000055;
+      }
+
+      #modal article {
+        max-width: 900px;
+        margin: auto;
+        background-color: white;
+      }
+      /* #popup {
+        display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: aquamarine;
+        display: none;
+        overflow: scroll;
+      }
+      #popup article {
+        width: 80vw;
+        display: flex;
+        margin: 4rem auto;
+        border-radius: 25px;
+        padding: 12px;
+        background-color: white;
+      }
+      #luk {
+        position: fixed;
+        padding: 1em;
+        font-size: 1.7em;
+        font-weight: bolder;
+        color: white;
+        cursor: pointer;
+      } */
+    </style>
+
+    <title>Employee gallery</title>
+  </head>
+  <body>
+    <h1>Employee gallery</h1>
+
+    <nav><button>alle</button></nav>
+
+    <aside id="modal">
+      <article>
+        <img src="" alt="" class="profilbillede" />
+        <h2 class="fornavn"></h2>
+        <p class="efternavn"></p>
+
+        <p class="email"></p>
+      </article>
+    </aside>
+
+    <section id="liste"></section>
+
+    <template>
+      <article>
+        <img src="" alt="" class="profilbillede" />
+        <h2 class="fornavn"></h2>
+        <p class="efternavn"></p>
+
+        <p class="email"></p>
+      </article>
+    </template>
+
+    <script>
+      const container = document.querySelector("section");
+      const temp = document.querySelector("template");
+      const modal = document.querySelector("#modal");
+      const nav = document.querySelector("nav");
+      const url = "https://esnpersongalleri-4fa8.restdb.io/rest/medlemmer";
+      const key = "61fcf7e63f215f310a37be63";
+
+      document.addEventListener("DOMContentLoaded", visMedlemmer);
+      let medlemmer = [
+        {
+          fornavn: "Katheryn",
+          efternavn: "Crist",
+          email: "Bella.Schaden@Reta.net",
+        },
+        {
+          fornavn: "Spencer",
+          efternavn: "Kuphal",
+          email: "Brandyn_Barrows@Haley.io",
+        },
+        {
+          fornavn: "Angie",
+          efternavn: "Quitzon",
+          email: "Raynor_Jamaal@hotmail.com",
+        },
+        {
+          fornavn: "Johnathan",
+          efternavn: "Blick",
+          email: "Rashawn.Rath@yahoo.com",
+        },
+        {
+          fornavn: "Isaias",
+          efternavn: "Runte",
+          email: "Heller.Stanford@gmail.com",
+        },
+        {
+          fornavn: "Danielle",
+          efternavn: "McGlynn",
+          email: "Emmy_Reilly@yahoo.com",
+        },
+        {
+          fornavn: "Nelson",
+          efternavn: "Armstrong",
+          email: "Toy_Shaniya@yahoo.com",
+        },
+        {
+          fornavn: "Thea",
+          efternavn: "Friesen",
+          email: "Giovanna_Buckridge@gmail.com",
+        },
+        {
+          fornavn: "Leo",
+          efternavn: "Runte",
+          email: "Gulgowski_Ava@Loraine.info",
+        },
+      ];
+      let filter = "alle";
+
+      const options = {
+        headers: {
+          "x-apikey": key,
+        },
+      };
+
+      function start() {
+        const listeVisning = document.querySelector("#liste");
+        medlemmer.forEach((medlem) => {
+          listevisning.innerHTML += `<p>${medlem.fornavn} ${medlem.efternavn} ${medlem.email}</p>`;
+        });
+      }
+
+      async function hentdata() {
+        const respons = await fetch(url, options);
+        const json = await respons.json();
+        medlemmer = json;
+        bygFilterMenu();
+        visMedlemmer();
+      }
+
+      function bygFilterMenu() {
+        document.querySelector("nav button").addEventListener("click", filtrer);
+        let mulige = [];
+        medlemmer.forEach((medlem) => {
+          if (!mulige.includes(medlem.troende)) {
+            mulige.push(medlem.troende);
+            const nyKnap = document.createElement("button");
+            nyKnap.textContent = medlem.troende;
+            nyKnap.addEventListener("click", filtrer);
+            nav.appendChild(nyKnap);
+          }
+        });
+      }
+
+      function filtrer() {
+        console.log(this.textContent);
+        filter = this.textContent;
+        container.textContent = "";
+        visMedlemmer();
+      }
+
+      function visMedlemmer() {
+        const dest = document.querySelector("#liste");
+        const skabelon = document.querySelector("template").content;
+        dest.textContent = ""; //fjerner containeren i en ny loop
+
+        medlemmer.forEach((medlem) => {
+          if (medlem.troende == filter || filter == "alle") {
+            const klon = temp.cloneNode(true).content;
+
+            klon.querySelector("h2").textContent = medlem.fornavn;
+            klon.querySelector(".efternavn").textContent = medlem.efternavn;
+
+            klon.querySelector(".profilbillede").src =
+              "faces/" + medlem.profilbillede;
+            klon.querySelector("img").alt = "profilbillede";
+            klon
+              .querySelector("img")
+              .addEventListener("click", () => visDetaljer(medlem));
+            klon.querySelector(".email").textContent = medlem.email;
+
+            klon
+              .querySelector("article")
+              .addEventListener("click", () => visDetaljer(medlem));
+            dest.appendChild(klon);
+          }
+        });
+      }
+
+      function visDetaljer(medlem) {
+        location.href = `personliste-detailview.html?id=${medlem._id}`;
+        // console.log(medlem);
+        // modal.querySelector("h2").textContent = medlem.fornavn;
+        // modal.querySelector("img").src = "faces/" + medlem.profilbillede;
+        // modal.style.display = "block";
+      }
+
+      modal.addEventListener("click", () => (modal.style.display = "none"));
+      hentdata();
+    </script>
+  </body>
+</html>

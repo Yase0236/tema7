@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      main {
+        width: 80vw;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      #liste {
+        display: grid;
+        grid-auto-columns: max-content;
+        grid-auto-flow: dense;
+        grid-auto-rows: minmax(350px, auto);
+        grid-gap: 25px;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        padding: 1rem;
+      }
+      @media (min-width: 650px) {
+        #liste {
+          display: grid;
+          grid-auto-columns: max-content;
+          grid-auto-flow: dense;
+          grid-auto-rows: minmax(200px, auto);
+          grid-gap: 25px;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+      }
+      article {
+        border: 1px solid blueviolet;
+        border-radius: 25px;
+        padding: 1rem;
+        background-color: rgb(190, 179, 202);
+        text-align: center;
+      }
+      button {
+        margin: 2em 0 0 1.2em;
+        text-transform: capitalize;
+      }
+      img {
+        max-width: 100%;
+      }
+      h1 {
+        border: 1px solid blueviolet;
+        font-family: "Road Rage", monospace;
+        text-align: center;
+        font-size: 3rem;
+      }
+      h2 {
+        color: blueviolet;
+        font-family: "Plateia", monospace;
+        font-size: 1rem;
+      }
+      .efternavn {
+        font-family: "Zen Kurenaido", monospace;
+        font-size: 1rem;
+        font-weight: 200;
+      }
+      .email {
+        font-family: "Zen Kurenaido", monospace;
+        font-size: 0.78rem;
+        font-weight: 200;
+        font-style: italic;
+      }
+      #modal {
+        display: none;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        background-color: #00000055;
+      }
+
+      #modal article {
+        max-width: 900px;
+        margin: auto;
+        background-color: white;
+      }
+    </style>
+
+    <title>Detailed view</title>
+  </head>
+
+  <body>
+    <main>
+      <button>Tilbage</button>
+    </main>
+    <!-- <template></template> -->
+    <article>
+      <img src="" alt="" class="profilbillede" />
+      <h2 class="navn"></h2>
+      <p class="email"></p>
+    </article>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const currentId = urlParams.get("id");
+      console.log({ currentId });
+      let medlem;
+
+      const url = `https://esnpersongalleri-4fa8.restdb.io/rest/medlemmer/${currentId}`;
+      const key = "61fcf7e63f215f310a37be63";
+
+      async function hentData() {
+        console.log("hentData");
+
+        const respons = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            "x-apikey": key,
+          },
+        });
+
+        medlem = await respons.json();
+        console.log({ medlem });
+        vis();
+      }
+
+      function vis() {
+        document.querySelector(".profilbillede").src =
+          "faces/" + medlem.profilbillede;
+        document.querySelector(".navn").textContent =
+          medlem.fornavn + " " + medlem.efternavn;
+        document.querySelector(".email").textContent = medlem.email;
+      }
+
+      hentData();
+
+      document.querySelector("button").addEventListener("click", () => {
+        history.back();
+      });
+    </script>
+  </body>
+</html>

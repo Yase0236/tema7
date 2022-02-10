@@ -19,10 +19,12 @@
 
       section {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 5px;
-        max-width: 960px;
-        margin: 0 auto;
+        grid-auto-columns: max-content;
+        grid-auto-flow: dense;
+        grid-auto-rows: minmax(350px, auto);
+        grid-gap: 25px;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        padding: 1rem;
       }
       @media (min-width: 650px) {
         section {
@@ -35,12 +37,12 @@
         }
       }
 
-      /* article {
+      article {
         border-radius: 25px;
         padding: 1rem;
         background-color: rgb(190, 179, 202);
         text-align: center;
-      } */
+      }
       button {
         margin: 2em 0 0 1.2em;
         text-transform: capitalize;
@@ -51,23 +53,24 @@
       }
       h1 {
         border: 1px solid blueviolet;
-        font-family: "Zen Kurenaido", monospace;
+        font-family: "Plateia", monospace;
         text-align: center;
         font-size: 3rem;
       }
       h2 {
-        /* color: blueviolet; */
-        font-family: "Plateia", monospace;
-        font-size: 1rem;
+        color: blue;
+        font-family: "Zen Kurenaido", monospace;
+        font-size: 2rem;
       }
       p {
-        font-family: monospace;
-        font-size: 0.5rem;
+        font-family: "Zen Kurenaido", monospace;
+        font-size: 1rem;
       }
       #modal {
         width: 100vw;
         height: 100vh;
-        display: fixed;
+        display: none;
+        position: fixed;
         background-color: antiquewhite;
       }
 
@@ -83,7 +86,9 @@
   <body>
     <h1>Menu kort</h1>
 
-    <nav><button>Alle</button></nav>
+    <nav>
+      <button data-kategori="alle" class="valgt">Alle</button>
+    </nav>
 
     <aside id="modal">
       <article>
@@ -95,7 +100,7 @@
       </article>
     </aside>
 
-    <section></section>
+    <section id="liste"></section>
 
     <template>
       <article>
@@ -115,7 +120,147 @@
       const url = "https://babushka-dd8a.restdb.io/rest/menu";
       const key = "600ec2fb1346a1524ff12de4";
 
-      let menuKort = [];
+      let menuKort = [
+        {
+          navn: "Voda-vodka",
+          pris: "19",
+          kortbeskrivelse: "Voda-vodka - vodka i rigelige mængder",
+        },
+        {
+          navn: "Kirgisisk roulade",
+          pris: "89",
+          kortbeskrivelse: "Kirgisisk roulade bestående af nødder og rødkål",
+        },
+        {
+          navn: "Kæmperogn med kartoffelmos",
+          pris: "89",
+          kortbeskrivelse: "Kæmpe klipfiskerogn med Kartofler og fiskefond",
+        },
+        {
+          navn: "Guzni",
+          pris: "69",
+          kortbeskrivelse: "Guzni - Rødbede/nøddeis ",
+        },
+        {
+          navn: "Pandekager med kaviar",
+          pris: "79",
+          kortbeskrivelse: "Brændte pandekager med Bordyriske ørne-kaviar",
+        },
+        {
+          navn: "Zygroffs bondeplatte",
+          pris: "109",
+          kortbeskrivelse: "Zygroffs bondeplatte - bøndernes svar på Tapas",
+        },
+        {
+          navn: "Russisk salat",
+          pris: "49",
+          kortbeskrivelse:
+            "Russisk salat med ærter, bønner, gulerødder og mayonnaise fra Volgograd",
+        },
+        {
+          navn: "Russisk ringbrød ",
+          pris: "29",
+          kortbeskrivelse: "Russisk ringbrød af Karapatisk mel",
+        },
+        {
+          navn: "Rødvin, glas",
+          pris: "49",
+          kortbeskrivelse: "Et glas god Rødvin fra det tidligere USSR",
+        },
+        {
+          navn: "Bochkarev fadøl",
+          pris: "55",
+          kortbeskrivelse: "En halv liter Bochkarev fadøl",
+        },
+        {
+          navn: "Gloske (cola)",
+          pris: "39",
+          kortbeskrivelse:
+            "Gloske - russisk for Cola - fra bryggeriet Iznogoud",
+        },
+        {
+          navn: "Pavlova i melon",
+          pris: "49",
+          kortbeskrivelse:
+            "Pavlova - russiske pandekager - i honningmelon fra Nordkorea",
+        },
+        {
+          navn: "Russisk ringbrød",
+          pris: "29",
+          kortbeskrivelse:
+            "Russisk ringbrød bagt med det fineste gryzni-mel fra Gryzkigistan",
+        },
+        {
+          navn: "Groggiroshorn",
+          pris: "39",
+          kortbeskrivelse: "Groggishorn - det russiske svar på pølsehorn",
+        },
+        {
+          navn: "Søde, syltede løg",
+          pris: "59",
+          kortbeskrivelse: "En lækker potpourri af søde, syltede løg",
+        },
+        {
+          navn: "Kogte kartofler",
+          pris: "29",
+          kortbeskrivelse: "Kogte kartofler med Murmanske krydderurter",
+        },
+        {
+          navn: "Dynryp",
+          pris: "149",
+          kortbeskrivelse: "Dynrup - Russisk bulgur med skovsvampe",
+        },
+        {
+          navn: "Murmanske bondeboller",
+          pris: "19",
+          kortbeskrivelse: "Murmanske bondeboller bagt i stenovn",
+        },
+        {
+          navn: "Østsibirisk kålsuppe",
+          pris: "69",
+          kortbeskrivelse: "Cauceskus bulgarske bondesuppe",
+        },
+        {
+          navn: "Bulgarsk bondesuppe",
+          pris: "99",
+          kortbeskrivelse: "Kålsuppe med 7 kålvarianter",
+        },
+        {
+          navn: "Hvidvin, glas",
+          pris: "39",
+          kortbeskrivelse: "Et glas russisk hvidvin fra Chernobyl",
+        },
+        {
+          navn: "Baltisk bondesuppe",
+          pris: "79",
+          kortbeskrivelse: "Baltisk bondesuppe - en solid starter",
+        },
+        {
+          navn: "Caviar bruschetta",
+          pris: "49",
+          kortbeskrivelse: "Brushcetta med russisk Caviar",
+        },
+        {
+          navn: "Russisk Tapas",
+          pris: "199",
+          kortbeskrivelse: "Russisk tapas med tomater og kød",
+        },
+        {
+          navn: "Cabanossi med rødbedecreme",
+          pris: "49",
+          kortbeskrivelse: "Cabanossi med rødbedecreme og løg",
+        },
+        {
+          navn: "Diplomat-bøf med grønt",
+          pris: "179",
+          kortbeskrivelse: "Diplomat-bøf med grønt",
+        },
+        {
+          navn: "Moldavisk fiskesuppe",
+          pris: "139",
+          kortbeskrivelse: "Den dejlige, alkoholholdige moldaviske fiskesuppe",
+        },
+      ];
       let filter = "alle";
 
       const options = {
@@ -123,13 +268,20 @@
           "x-apikey": key,
         },
       };
+      function start() {
+        const listeVisning = document.querySelector("#liste");
+        menuKort.forEach((menu) => {
+          listevisning.innerHTML += `<p>${menu.navn} ${menu.pris} ${menu.kortbeskrivelse}</p>`;
+        });
+      }
 
       async function hentData() {
         const respons = await fetch(url, options);
         const json = await respons.json();
         menuKort = json;
+        console.log(menuKort);
         bygFilterMenu();
-        vis();
+        visMenu();
       }
 
       function bygFilterMenu() {
@@ -150,10 +302,14 @@
         console.log(this.textContent);
         filter = this.textContent;
         container.textContent = "";
-        vis();
+        visMenu();
       }
 
-      function vis() {
+      function visMenu() {
+        const dest = document.querySelector("#liste");
+        const skabelon = document.querySelector("template").content;
+        dest.textContent = ""; //fjerner containeren i en ny loop
+
         menuKort.forEach((menu) => {
           if (menu.kategori == filter || filter == "alle") {
             const klon = temp.cloneNode(true).content;
@@ -161,10 +317,10 @@
             klon.querySelector("h2").textContent = menu.navn;
 
             klon.querySelector(".billede").src =
-              "../07.02.01/menu/" + menu.billede;
-            klon.querySelector(".billede").alt = "billede";
+              "menu/" + menu.billednavn + "-md.jpg";
+            klon.querySelector("img").alt = "billede";
             klon
-              .querySelector(".billede")
+              .querySelector("img")
               .addEventListener("click", () => visDetaljer(menu));
 
             klon.querySelector(".pris").textContent = menu.pris;
@@ -176,20 +332,19 @@
               .addEventListener(
                 "click",
                 () =>
-                  (location.href = `personliste-singleview.html?id=${medlem._id}`)
+                  (location.href = `menuliste-singleview.html?id=${menu._id}`)
               );
-
-            container.appendChild(klon);
+            dest.appendChild(klon);
           }
         });
       }
 
       function visDetaljer(menu) {
-        console.log(menu);
-        modal.querySelector("h2").textContent = menu.navn;
-        modal.querySelector(".billednavn").src =
-          "../07.02.01/menu/" + menu.billednavn;
-        modal.style.display = "block";
+        location.href = `menuliste-singleview.html?id=${menu._id}`;
+        // console.log(menu);
+        // modal.querySelector("h2").textContent = menu.navn;
+        // modal.querySelector("img").src = "menu/" + menu.billednavn;
+        // modal.style.display = "block";
       }
 
       modal.addEventListener("click", () => (modal.style.display = "none"));
