@@ -358,7 +358,7 @@
               .addEventListener(
                 "click",
                 () =>
-                  (location.href = `menuliste-singleview.html?id=${menu._id}`)
+                  (location.href = `menuliste-detailview.html?id=${menu._id}`)
               );
             dest.appendChild(klon);
           }
@@ -366,7 +366,7 @@
       }
 
       function visDetaljer(menu) {
-        location.href = `menuliste-singleview.html?id=${menu._id}`;
+        location.href = `menuliste-detailview.html?id=${menu._id}`;
         // console.log(menu);
         // modal.querySelector("h2").textContent = menu.navn;
         // modal.querySelector("img").src = "menu/" + menu.billednavn;
